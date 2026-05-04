@@ -1,4 +1,16 @@
 services:
+  service-registry:
+    build: service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - has-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 10s
   user-db:
     image: postgres:15
     environment:
@@ -31,6 +43,8 @@ services:
       - has-network
     depends_on:
       user-db:
+        condition: service_healthy
+      service-registry:
         condition: service_healthy
 volumes:
   user-data:
