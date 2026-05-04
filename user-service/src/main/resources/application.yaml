@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/user-db
+    username: postgres
+    password: cheesecake
+  jpa:
+    open-in-view: true
