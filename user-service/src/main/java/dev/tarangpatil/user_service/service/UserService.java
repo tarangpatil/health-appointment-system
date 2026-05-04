@@ -49,4 +49,15 @@ public class UserService {
         user.getRoles().add(role);
         return new UserDTO(userRepo.save(user));
     }
+
+    public String generateToken(Users user) {
+        if (user.getEmail() == null || user.getPasswordHash() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email/password is required");
+        Users dbUser = userRepo.findByEmail(user.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid credentials"));
+        if (!encoder.matches(user.getPasswordHash(), dbUser.getPasswordHash()))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid credentials");
+
+        return JwtUtils.generateToken(dbUser);
+    }
 }

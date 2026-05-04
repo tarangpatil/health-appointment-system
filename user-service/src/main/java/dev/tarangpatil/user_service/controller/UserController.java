@@ -37,4 +37,9 @@ public class UserController {
         return userService.addRole(email, role);
     }
 
+    @PostMapping("/login")
+    public String login(@RequestBody Users user) {
+        return userService.generateToken(user);
+    }
+
 }
