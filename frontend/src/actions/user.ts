@@ -124,6 +124,18 @@ export default async function registerUser(
   const jwt = await loginResponse.text();
   console.log({ jwt });
 
-  (await cookies()).set("access_token", jwt);
-  redirect(formData.get("next") as string);
+  const jwtPayload = JSON.parse(atob(jwt.split(".")[1]));
+
+  const cookieJar = await cookies();
+  cookieJar.set("access_token", jwt, {
+    httpOnly: true,
+    sameSite: "strict",
+    expires: jwtPayload.exp * 1000,
+  });
+
+  redirect(
+    formData.get("next")
+      ? (formData.get("next") as string)
+      : "/patient/register",
+  );
 }
