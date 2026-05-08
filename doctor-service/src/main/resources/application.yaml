@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: doctor-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/user-db
+    username: postgres
+    password: cheesecake
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    registryFetchIntervalSeconds: 5

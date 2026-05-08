@@ -41,6 +41,24 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
+  doctor-db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=doctor-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - doctor-data:/var/lib/postgresql/data:rw
+    networks:
+      - has-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
   user-service:
     build: user-service
     ports:
@@ -60,5 +78,6 @@ services:
         condition: service_healthy
 volumes:
   user-data:
+  doctor-data:
 networks:
   has-network:

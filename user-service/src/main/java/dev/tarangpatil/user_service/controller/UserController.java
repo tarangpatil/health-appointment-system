@@ -32,6 +32,11 @@ public class UserController {
         return userService.getByEmail(email);
     }
 
+    @GetMapping("/id/{id}")
+    public UserDTO getById(@PathVariable Long id) {
+        return userService.getById(id);
+    }
+
     @PutMapping("/email/{email}/role/{role}")
     public UserDTO addRole(@PathVariable String email, @PathVariable Role role) {
         return userService.addRole(email, role);

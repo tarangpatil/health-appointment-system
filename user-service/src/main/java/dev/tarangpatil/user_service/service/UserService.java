@@ -60,4 +60,10 @@ public class UserService {
 
         return JwtUtils.generateToken(dbUser);
     }
+
+    public UserDTO getById(Long id) {
+        return new UserDTO(
+                userRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+
+    }
 }
