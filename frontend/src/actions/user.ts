@@ -122,7 +122,6 @@ export default async function registerUser(
   });
   if (!loginResponse.ok) redirect("/user/login");
   const jwt = await loginResponse.text();
-  console.log({ jwt });
 
   const jwtPayload = JSON.parse(atob(jwt.split(".")[1]));
 

@@ -22,6 +22,9 @@ public class JwtUtils {
         return Jwts
                 .builder()
                 .subject(user.getId() + "")
+                .claim("firstName", user.getFirstName())
+                .claim("lastName", user.getLastName())
+                .claim("email", user.getEmail())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 12 * 60 * 60 * 1000))
                 .claim("roles", roles)
