@@ -47,4 +47,8 @@ public class UserController {
         return userService.generateToken(user);
     }
 
+    @GetMapping("/refresh-token/{userId}")
+    public String refreshToken(@PathVariable Long userId) {
+        return userService.refreshToken(userId);
+    }
 }

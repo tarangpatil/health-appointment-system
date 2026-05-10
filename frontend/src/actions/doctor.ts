@@ -82,5 +82,20 @@ export async function DoctorRegister(
       },
     };
 
+  const newJwt = await fetch(
+    `http://localhost:8080/api/user/refresh-token/${userId}`,
+    { headers: { Authorization: `Bearer ${jwt}` } },
+  ).then((res) => res.text());
+
+  console.log({ newJwt });
+
+  const jwtPayload = JSON.parse(atob(newJwt.split(".")[1]));
+
+  cookieJar.set("access_token", newJwt, {
+    httpOnly: true,
+    sameSite: "strict",
+    expires: jwtPayload.exp * 1000,
+  });
+
   redirect("/doctor/dashboard");
 }

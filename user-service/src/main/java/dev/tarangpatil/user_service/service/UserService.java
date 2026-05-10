@@ -36,18 +36,22 @@ public class UserService {
 
     public UserDTO getByEmail(String email) {
         return new UserDTO(userRepo.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "user not found")));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found")));
     }
 
     public UserDTO addRole(String email, Role role) {
         Users user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "user not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
 
         if (user.getRoles() == null)
             user.setRoles(new HashSet<>());
 
         user.getRoles().add(role);
         return new UserDTO(userRepo.save(user));
+    }
+
+    public String refreshToken(Long userId) {
+        return JwtUtils.generateToken(userRepo.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
     public String generateToken(Users user) {
